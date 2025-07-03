@@ -80,7 +80,7 @@ MaxTenuringThreshold=0，设置垃圾最大年龄。如果设置为0，那么年
 
 <font style="color:#DF2A3F;">堆内存在2-4g，且对停顿时间比较敏感的业务建议使用cms</font>
 
-**-XX:+****<font style="color:rgb(25, 27, 31);">UseConcMarkSweepGC</font>**
+**<font style="color:rgb(25, 27, 31);">-XX:UseConcMarkSweepGC</font>**
 
 <font style="color:rgb(25, 27, 31);">打开CMS GC收集器。JVM在1.8之前默认使用的是Parallel GC，9以后使用G1 GC。</font>
 
