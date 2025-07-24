@@ -1,4 +1,4 @@
-# 类继承结构
+## 1.类继承结构
 
 ThreadPoolExecutor源码解析，需要一定的线程池基础知识，否则这篇文章看起来会比较困难。
 我们直接开门见山看类继承结构图：
@@ -8,7 +8,7 @@ ThreadPoolExecutor源码解析，需要一定的线程池基础知识，否则�
 
 可以看到，ThreadPoolExecutor实现了Executor、ExecutorService两个接口，实现了AbstractExecutorService抽象类，我们看下这些接口和抽象类中的核心方法。
 
-## Executor
+### Executor
 
 ```java
 public interface Executor {
@@ -19,7 +19,7 @@ public interface Executor {
 
 可以看到，ThreadPoolExecutor实现了顶级接口Executor，在该接口中仅定一个了一个方法void execute(Runnable command)。
 
-## ExecutorService
+### ExecutorService
 
 ```java
 public interface ExecutorService extends Executor {
@@ -40,7 +40,7 @@ public interface ExecutorService extends Executor {
 }
 ```
 
-## AbstractExecutorService
+### AbstractExecutorService
 
 ```java
 public abstract class AbstractExecutorService implements ExecutorService {
@@ -79,7 +79,7 @@ public abstract class AbstractExecutorService implements ExecutorService {
 
 这里可以看到这些submit方法最终都是将参数封装成RunnableFuture类型的FutureTask，再交给execute方法执行。
 
-## ThreadPoolExecutor
+### ThreadPoolExecutor
 
 终于到ThreadPoolExecutor类了，我们先来看下里面的核心变量。
 
@@ -122,9 +122,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     }
 ```
 
-# 运行机制
+## 2.运行机制
 
-## execute
+### execute
 
 我们看到execute方法的具体实现
 
@@ -161,7 +161,7 @@ public void execute(Runnable command) {
 }
 ```
 
-## worker
+### worker
 
 上面这段代码，出现了好几处addWorker方法，我们点进去看下，究竟怎么个事。
 
@@ -200,7 +200,7 @@ private final class Worker
     }
 ```
 
-## addWorker
+### addWorker
 
 可以看到，Worker继承了大名鼎鼎的AQS，并且实现了Runnable接口。我们点开addWorker方法。
 
@@ -289,7 +289,7 @@ private boolean addWorker(Runnable firstTask, boolean core) {
 }
 ```
 
-## runWorker
+### runWorker
 
 前面我们看到worker其实也是Runnable，t.start()启动后执行的run方法会执行runWorker方法，点开它。
 
@@ -347,7 +347,7 @@ final void runWorker(Worker w) {
 }
 ```
 
-## getTask
+### getTask
 
 我们先看getTask()是如何获取队列中的任务
 
@@ -395,7 +395,7 @@ private Runnable getTask() {
 }
 ```
 
-## processWorkerExit
+### processWorkerExit
 
 最后我们看下processWorkerExit方法，关闭线程。
 
@@ -438,7 +438,7 @@ private void processWorkerExit(Worker w, boolean completedAbruptly) {
 
 这里我们要明白一个道理，当线程池中的线程在执行任务时出现了没有被捕获的异常，会导致这个当前这个线程回收，剩余线程不够用的时候，会创建一个新的线程。如果异常经常出现的话，会导致线程池频繁创建线程，增加资源开销，所以我们将任务交给线程池处理时最好的加一层try-catch捕获异常。
 
-# 总结
+## 3.总结
 
 这篇文章花了较大篇幅从源码上分析了ThreadPoolExecutor的核心实现原理，希望能够帮助大家对java线程池的学习。
 

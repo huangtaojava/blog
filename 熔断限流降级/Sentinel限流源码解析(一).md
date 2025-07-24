@@ -1,4 +1,4 @@
-# 前言
+## 前言
 
 随着微服务的流行，服务和服务之间的稳定性变得越来越重要。Sentinel
 是面向分布式、多语言异构化服务架构的流量治理组件，主要以流量为切入点，从流量路由、流量控制、流量整形、熔断降级、系统自适应过载保护、热点流量防护等多个维度来帮助开发者保障微服务的稳定性。
@@ -6,7 +6,7 @@
 今天这篇文章仅做Sentinel限流部分的核心源码解析，关于Sentinel的其他相关知识大家可以移步[官网](https://sentinelguard.io/zh-cn/index.html)
 进行了解。
 
-# 源码解析
+## 1.源码解析
 
 ```java
 public class DemoApplication {
@@ -170,7 +170,7 @@ public abstract class AbstractLinkedProcessorSlot<T> implements ProcessorSlot<T>
     }
 ```
 
-## FlowSlot
+### FlowSlot
 
 上面提到的Slot我们不一个一个的看了，直接定位到限流的FlowSlot。
 
@@ -471,7 +471,7 @@ public boolean canPass(Node node, int acquireCount, boolean prioritized) {
 }
 ```
 
-# 总结
+## 2.总结
 
 以上就是Sentinel限流源码核心部分的解析，关于Sentinel通过滑动窗口统计分、秒两个维度相关qps和并发部分的源码解析将会在下篇文章进行解析，感兴趣的可以关注我，谢谢大家。
 

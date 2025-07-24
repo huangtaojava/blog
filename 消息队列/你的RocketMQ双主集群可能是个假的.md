@@ -1,11 +1,11 @@
-# 问题现象
+## 1.问题现象
 
 RocketMQ部署的双主双从集群，Topic_Test1只存在于其中一台主节点broker-a上，从而该Topic发送的消息只会发送到了broker-a节点，另一台主节点broker-b等于是“隔岸观火”没有发挥任何作用。
 <img alt="你的RocketMQ双主集群可能是个假的-1.png" height="390" src="../image/%E4%BD%A0%E7%9A%84RocketMQ%E5%8F%8C%E4%B8%BB%E9%9B%86%E7%BE%A4%E5%8F%AF%E8%83%BD%E6%98%AF%E4%B8%AA%E5%81%87%E7%9A%84-1.png" width="1512"/>
 
 <img alt="你的RocketMQ双主集群可能是个假的-2.png" height="472" src="../image/%E4%BD%A0%E7%9A%84RocketMQ%E5%8F%8C%E4%B8%BB%E9%9B%86%E7%BE%A4%E5%8F%AF%E8%83%BD%E6%98%AF%E4%B8%AA%E5%81%87%E7%9A%84-2.png" width="1512"/>
 
-# 问题分析
+## 2.问题分析
 
 我们在发送Topic_Test1主题消息时，MQ集群里并存在Topic_Test1这个主题，Broker参数autoCreateTopicEnable默认为true，会自动创建不存在的Topic。
 
@@ -19,7 +19,7 @@ RocketMQ部署的双主双从集群，Topic_Test1只存在于其中一台主节�
 
    现在生产者在发送消息的时候，肯定是获取不到这个未创建Topic的路由信息的，那么它会如何处理呢？
 
-# 源码
+## 3.源码
 
 没有什么是比源码更能说明问题的，我们直接看源码吧。 RocketMQ版本：5.1.0
 
@@ -47,7 +47,7 @@ RocketMQ部署的双主双从集群，Topic_Test1只存在于其中一台主节�
 
 <img alt="你的RocketMQ双主集群可能是个假的-9.png" height="563" src="../image/%E4%BD%A0%E7%9A%84RocketMQ%E5%8F%8C%E4%B8%BB%E9%9B%86%E7%BE%A4%E5%8F%AF%E8%83%BD%E6%98%AF%E4%B8%AA%E5%81%87%E7%9A%84-9.png" width="1512"/>
 
-# 总结：
+## 4.总结：
 
 生产环境中，一定要关闭自动创建主题（autoCreateTopicEnable=false），当业务需要新建主题时，选择手动创建,如果不关闭，在第一次发送消息量比较少时，则可能出现某个主节点无该主题。
 

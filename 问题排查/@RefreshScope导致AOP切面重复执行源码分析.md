@@ -4,7 +4,7 @@
 
 Tips:需要spring aop源码基础，否则很难看懂。
 
-## 测试demo
+## 1.测试demo
 
 ```Java
 @Aspect
@@ -49,7 +49,7 @@ public class Application {
 }
 ```
 
-## 源码分析
+## 2.源码分析
 
 <img alt="@RefreshScope导致AOP切面重复执行源码分析-1.png" height="400" src="../image/@RefreshScope导致AOP切面重复执行源码分析-1.png" width="750"/>
 
@@ -124,7 +124,7 @@ public void addAdvisors(Collection<Advisor> advisors) {
 
 这里也进一步验证了前面的分析。
 
-## 总结
+## 3.总结
 
 当我们在实际项目中遇到问题时，往往并不清楚问题的关键所在。本文采用打断点的方法，逐层从下而上分析源代码，以找出问题的根源。
 当切面类TestAspect（加了@Aspect）加上@RefreshScope时后会生成scopedTarget.testAspect和testAspect两个bean，造成切面方法执行两次。具体@RefreshScope为什么会额外生成scopedTarget.testAspect这个bean，我将在另一篇文章中解析。

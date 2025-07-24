@@ -9,7 +9,7 @@ confinement）的一种机制，它允许每个线程拥有自己独立的变量
 在线程池或者线程复用情况下的传递问题，能够有效地克服 ThreadLocal 的限制，使得在多线程环境下数据的传递更加可靠和灵活。接下来，我们将从源码角度深入探讨
 TransmittableThreadLocal 的实现原理和解决方案，以及它是如何优雅地解决了 ThreadLocal 的不足之处。
 
-# 一、ThreadLocal的局限性
+## 1.ThreadLocal的局限性
 
 我们运行下列两组代码，对比一下ThreadLocal和TransmittableThreadLocal的执行结果
 
@@ -56,7 +56,7 @@ public class TestTransmittableThreadLocal {
 变量。然而，在实际业务中，我们常常需要在多线程异步操作中使子线程能够获取到全局变量的情况。这种情况下，ThreadLocal
 就无法满足我们的需求。在这种情况下，TransmittableThreadLocal 的出现能够很好地解决这个问题，允许子线程有效地获取到在父线程中设置的变量，从而实现了在多线程环境中全局变量的传递。
 
-# 二、TransmittableThreadLocal源码解析
+## 2.TransmittableThreadLocal源码解析
 
 TransmittableThreadLocal [github地址](https://github.com/alibaba/transmittable-thread-local)
 
@@ -109,7 +109,7 @@ TransmittableThreadLocal [github地址](https://github.com/alibaba/transmittable
 
 这里将取出的父线程中的变量值captured赋给了子线程，从而成功实现了线程本地变量在父子线程中的传递。
 
-# 三、总结
+## 3.总结
 
 在本文中，我们对 TransmittableThreadLocal 核心源码进行了探讨，特别是其在实现线程传递过程中的核心机制。然而，TransmittableThreadLocal
 的实现远不止所介绍的内容那么简单。在其背后涉及了更多深入的细节和技术原理，包括线程池中线程的管理、序列化和反序列化机制、内存模型等方面。
